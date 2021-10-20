@@ -1,0 +1,24 @@
+<!-- Component:myComponent -->
+<apex:component >
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+</head>
+<div>
+     <nav class="navbar navbar-dark bg-dark" style="padding:20px;">
+             <h1><p class="" style="margin-left:50px;color:#007bff">HOSPITAL</p></h1>
+             <div class="float-left" style="width:400px;position:absolute;margin-left:300px">
+                 <a style="color:white;" href="/apex/Appoitments" id="appLink">Appoitments</a>
+                 <apex:outputPanel rendered="{!If($Profile.Name =='System Administrator',true,false)}">
+                     <a style="padding-left:15px;color:white;" href="/apex/Doctors" id="appLisnk">Doctors</a>
+                      <a style="padding-left:15px;color:white;" href="/apex/Patients" id="appLissnk">Patients</a>
+                  </apex:outputPanel>
+              </div>
+              <div class="float-right" style="width:230px;">
+                         <img class="card-img-top" style="position:absolute;width:30px;" src="https://bgo-dev-ed--c.visualforce.com/resource/1634180014000/imageUser"  alt="Card image cap"/>
+                         <p class="text-center" style="color:#ffffff;">{!$User.FirstName}  {!$User.LastName}</p>        
+               </div>
+     </nav>
+     </div>
+</apex:component>

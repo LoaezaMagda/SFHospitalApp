@@ -1,0 +1,54 @@
+<apex:page standardController="Patients__c" extensions="patientList" lightningStyleSheets="false" showHeader="false" sidebar="false">
+    <c:headerHospitalApp />
+    <c:welcomeCardHospitalApp />
+    <div class="container">
+       <div id="menu-content" class="float-left" style="width:200px;padding:20px;position:relative">
+         <a href="/apex/createPatient" class="list-group-item list-group-item-action active" aria-current="true">
+           new Patient
+        </a>
+        </div><br/><br/><br/><br/>
+        <apex:form title="Viewing Patients">
+          <apex:outputPanel id="test2">
+               <apex:pageBlock id="details">
+                 <apex:pageBlockTable value="{!Patients}" var="p" style="text-align:center;">
+                    <apex:column >
+                        <apex:outputField value="{!p.Name}" id="PatientAppDOM" /> 
+                        <apex:facet name="header">No</apex:facet>
+                    </apex:column>
+                     <apex:column >
+                        <apex:outputField value="{!p.First_Name__c}" id="firstNAppDOM" /> 
+                        <apex:facet name="header">FirstName</apex:facet>
+                    </apex:column>
+                     <apex:column >
+                        <apex:outputField value="{!p.Last_Name__c}" id="lastNAppDOM" /> 
+                        <apex:facet name="header">LastName</apex:facet>
+                    </apex:column>
+                    <apex:column >
+                        <apex:outputField value="{!p.Age__c}" id="AgeAppDOM" /> 
+                        <apex:facet name="header">Age</apex:facet>
+                    </apex:column>
+                     <apex:column >
+                        <apex:outputField value="{!p.Gender__c}" id="GenderAppDOM" /> 
+                        <apex:facet name="header">Gender</apex:facet>
+                    </apex:column>
+                    <apex:column >
+                        <apex:outputField value="{!p.Email__c}" id="EmailAppDOM" /> 
+                        <apex:facet name="header">Email</apex:facet>
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">Action</apex:facet>
+                          <apex:outputlink value="/apex/createPatient"> Edit <apex:param name="id" value="{!p.Id}"/> </apex:outputlink>
+                     </apex:column>
+                </apex:pageBlockTable>
+                 <apex:pageBlockButtons >
+                    <apex:commandButton style="margin-left:150px;" id="btnlink1" value="<<" rerender="details" action="{!beginning}" disabled="{!prev}"/>
+                    <apex:commandButton id="btnlink2" value="<" rerender="details" action="{!previous}" disabled="{!prev}" />
+                    <apex:commandButton id="btnlink3" value=">" rerender="details" action="{!next}" disabled="{!nxt}"/>
+                    <apex:commandButton id="btnlink4" value=">>" rerender="details" action="{!end}" disabled="{!nxt}"/>
+                 </apex:pageBlockButtons>  
+             </apex:pageBlock>
+            </apex:outputPanel>
+        </apex:form>        
+    </div>
+<c:footerHospitalApp />
+</apex:page>

@@ -1,0 +1,11 @@
+<apex:component >
+<br/><br/>
+     <div class="card" style="width: 18rem; margin:0 auto;">
+        <img class="card-img-top" style="margin:0 auto;width:50px;" src="https://bgo-dev-ed--c.visualforce.com/resource/1634180014000/imageUser"  alt="Card image cap"/>
+            <br/>
+        <div class="card-body" style="text-align:center;">
+          <h4 class="card-title">Welcome!</h4><br/>
+          <h3>{!$User.FirstName}  {!$User.LastName}</h3>
+        </div>
+      </div>
+</apex:component>

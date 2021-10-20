@@ -1,0 +1,49 @@
+<apex:page standardController="Appointment__c" standardStylesheets="true" extensions="appoitmentList" lightningStyleSheets="true" showheader="false"  sidebar="false">
+    <c:headerHospitalApp />
+    <br/>
+  <div class="container">
+      <apex:SectionHeader title="Appoitment" subtitle="Edit Appoitment" rendered="{! If(appoitmentId != '' ,true,false) }"/>      
+  	  <apex:SectionHeader title="Appoitment" subtitle="New Appoitment" rendered="{! If(appoitmentId == '' ,true,false) }"/>
+          <apex:form >
+          <apex:pageMessages />
+        <apex:pageBlock >
+            <apex:pageBlockButtons styleClass="btn-save">
+                <apex:commandButton value="Save" action="{!save}"/>
+            </apex:pageBlockButtons>
+            	<apex:outputPanel id="docto" rendered="{! If(currentProfile=='Standar Platform User2',true,false) }">
+                    <apex:pageBlockSection title="Appoitment" columns="1">
+                        <apex:inputField value="{!app.Patientt__c}" rendered="{!If(appoitmentId != '', true,false) }" html-disabled="true"/><br/>
+                        <apex:inputField value="{!app.Patientt__c}" rendered="{!If(appoitmentId == '', true,false) }" /><br/>
+                        <apex:inputField value="{!app.Date__c}" id="date"/><br/>
+                        <apex:inputField value="{!app.Time__c}" id="time"/><br/>
+                        <apex:inputField value="{!app.Status__c}" id="status" rendered="{! If(app.Status__c == '' || app.Status__c == null, true, false)}"/>                        
+                    </apex:pageBlockSection>
+            	</apex:outputPanel>
+            
+            <apex:outputPanel id="appoit3" rendered="{! If(currentProfile=='Patients',true,false) }">
+                    <apex:pageBlockSection title="Appoitment" columns="1">
+                        <apex:inputField value="{!app.Doctorr__c}" rendered="{!If(appoitmentId != '', true,false)}"  html-disabled="true"/><br/>
+                        <apex:inputField value="{!app.Doctorr__c}" rendered="{!If(appoitmentId == '', true,false) }" /><br/>
+                        <apex:inputField value="{!app.Date__c}" id="date"/>
+                        <apex:inputField value="{!app.Time__c}" id="time"/>
+                        <apex:inputField value="{!app.Status__c}" id="status" rendered="{! If(app.Status__c == '' || app.Status__c == null, true, false)}"/>  
+                    </apex:pageBlockSection>
+             </apex:outputPanel>
+            
+            <apex:outputPanel id="appoit2" rendered="{! If(currentProfile == 'System Administrator' ,true,false) }">
+                    <apex:pageBlockSection title="Appoitment" columns="1">
+                        <apex:inputField value="{!app.Patientt__c}" rendered="{!If(appoitmentId != '', true,false) }" html-disabled="true"/><br/>
+                        <apex:inputField value="{!app.Doctorr__c}" rendered="{!If(appoitmentId != '', true,false)}"  html-disabled="true"/><br/>
+                        <apex:inputField value="{!app.Patientt__c}" rendered="{!If(appoitmentId == '', true,false) }" /><br/>
+                        <apex:inputField value="{!app.Doctorr__c}" rendered="{!If(appoitmentId == '', true,false) }" /><br/>
+                        <apex:inputField value="{!app.Date__c}" id="date"/>
+                        <apex:inputField value="{!app.Time__c}" id="time"/>
+                        <apex:inputField value="{!app.Status__c}" id="status" rendered="{! If(app.Status__c == '' || app.Status__c == null, true, false)}"/>  
+                    </apex:pageBlockSection>
+            	</apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+	<br/><br/><br/>
+  </div>
+  <c:footerHospitalApp />
+</apex:page>
