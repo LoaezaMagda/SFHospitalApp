@@ -1,27 +1,29 @@
 <apex:page standardController="Appointment__c" extensions="appoitmentList" lightningStyleSheets="false" showHeader="false" sidebar="false">
 	 <c:headerHospitalApp />
      <c:welcomeCardHospitalApp />
-    <div class="container">
-        <div id="menu-content" class="float-left" style="width:200px;padding:20px;position:relative">
+    <div class="container" style="margin-bottom:150px;">
+        <div id="menu-content" class="float-left" style="width:220px;padding:10px;position:relative;text-align:center">
          <a href="/apex/createAppoitment" class="list-group-item list-group-item-action active" aria-current="true">
-           new Appoitment
+           new Appointment
          </a>
     	</div><br/><br/><br/><br/>
-        
-        <apex:form title="Viewing Appoitments">
+        <div id="appmsg">
+             <apex:pageMessages />  
+        </div>
+       <apex:form title="Viewing Appointments">
           <apex:outputPanel id="test2">
                <apex:pageBlock id="details">
-                 <apex:pageBlockTable value="{!Appoitments}" var="a" style="text-align:center;">
-                     <apex:column >
-                        <apex:outputField value="{!a.Name}" id="NameAppDOM" /> 
+                 <apex:pageBlockTable value="{!Appointments}" var="a" style="text-align:center;">
+                    <apex:column >
+                        <apex:outputField value="{!a.Name}" id="NameAppDOM1"  html-disabled="true"/>
                         <apex:facet name="header">Name</apex:facet>
                     </apex:column>
-                    <apex:column >
-                        <apex:outputField value="{!a.Doctorr__c}" id="DoctorAppDOM" /> 
+                     <apex:column >
+                        <apex:outputField value="{!a.Doctor__c}" id="DoctorAppDOM" /> 
                         <apex:facet name="header">Doctor</apex:facet>
                     </apex:column>
-                    <apex:column >
-                        <apex:outputField value="{!a.Patientt__c}" id="PatientAppDOM" /> 
+                     <apex:column >
+                        <apex:outputField value="{!a.Patient__c}" id="PatientAppDOM" /> 
                         <apex:facet name="header">Patient</apex:facet>
                     </apex:column>
                     <apex:column >
@@ -37,15 +39,20 @@
                         <apex:facet name="header">Status</apex:facet>
                     </apex:column>
                      <apex:column >
-                        <apex:facet name="header">Action</apex:facet>
-                          <apex:outputlink value="/apex/createAppoitment"> Edit <apex:param name="id" value="{!a.Id}"/> </apex:outputlink>
-                        <apex:commandLink style="margin-left:10px;" value="Confirm" action="{!confirmAppoitment}">
+                      <apex:facet name="header">Action</apex:facet>
+                      <apex:outputPanel rendered="{!If(a.Date__c >= TODAY(),true,false)}">
+                        <apex:outputlink value="/apex/createAppoitment"> Edit <apex:param name="id" value="{!a.Id}"/> </apex:outputlink>
+                        <apex:commandLink style="margin-left:10px;" value="Confirm" action="{!confirmAppoitment}" rendered="{! If(currentProfile=='Patients',true,false) }">
                             <apex:param name="appToConfirm" value="{!a.Id}" assignTo="{!appId}"/>
                          </apex:commandLink>
-                         <apex:commandLink style="margin-left:10px;" value="Cancel" action="{!cancelAppoitment}">
+                         <apex:commandLink style="margin-left:10px;" value="Cancel" action="{!cancelAppoitment}" rendered="{! If(currentProfile=='Patients',true,false) }">
                            <apex:param name="appToCancel" value="{!a.Id}" assignTo="{!appId}"/>
                          </apex:commandLink>
-                     </apex:column>
+                      </apex:outputPanel>
+                      <apex:outputPanel rendered="{!If(a.Date__c < TODAY(),true,false)}">
+                         <apex:outputText >Completed</apex:outputText>
+                      </apex:outputPanel>
+                    </apex:column>
                 </apex:pageBlockTable>
                  <apex:pageBlockButtons >
                     <apex:commandButton style="margin-left:150px;" id="btnlink1" value="<<" rerender="details" action="{!beginning}" disabled="{!prev}"/>
@@ -55,7 +62,15 @@
                  </apex:pageBlockButtons>  
              </apex:pageBlock>
             </apex:outputPanel>
-        </apex:form>        
+        </apex:form>  
     </div>
-    <c:footerHospitalApp />
+  <c:footerHospitalApp />
+<script>
+    (function(){
+       setTimeout(() => {
+          let msg = document.getElementById('appmsg');
+          msg.hidden = true;
+       },5000)
+    })();
+</script>
 </apex:page>

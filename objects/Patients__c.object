@@ -86,7 +86,7 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
-        <content>Patients</content>
+        <content>createPatient</content>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Visualforce</type>
     </actionOverrides>
@@ -243,10 +243,9 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <displayFormat>P-{0000}</displayFormat>
-        <label>Patients Number</label>
+        <label>Patient Name</label>
         <trackHistory>false</trackHistory>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>Patients</pluralLabel>
     <searchLayouts/>

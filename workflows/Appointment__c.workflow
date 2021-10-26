@@ -13,7 +13,7 @@
             <type>email</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>unfiled$public/Recordatorio_Cita</template>
+        <template>Appointment_Templates_Email/Recordatorio_Cita</template>
     </alerts>
     <alerts>
         <fullName>Send_Email_to_Patient_Confirm_Appoitment</fullName>
@@ -28,7 +28,7 @@
             <type>email</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>unfiled$public/Confirm_appointment_patient</template>
+        <template>Appointment_Templates_Email/Confirm_appointment_patient</template>
     </alerts>
     <alerts>
         <fullName>Send_Email_to_Patient_Confirm_Appoitment2</fullName>
@@ -39,12 +39,12 @@
             <type>email</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>unfiled$public/Confirm_appointment_patient</template>
+        <template>Appointment_Templates_Email/Confirm_appointment_patient</template>
     </alerts>
     <alerts>
-        <fullName>Send_email_when_appoitment_was_cancelled</fullName>
+        <fullName>Send_email_when_appointment_was_cancelled</fullName>
         <ccEmails>loaeza.magdalena@gmail.com</ccEmails>
-        <description>Send email when appoitment was cancelled</description>
+        <description>Send email when appointment was cancelled</description>
         <protected>false</protected>
         <recipients>
             <field>Doctor_Email__c</field>
@@ -55,7 +55,7 @@
             <type>email</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>unfiled$public/Appoitment_was_Cancelled</template>
+        <template>Appointment_Templates_Email/Appointment_was_Cancelled</template>
     </alerts>
     <alerts>
         <fullName>Send_email_when_appoitment_was_confirmed</fullName>
@@ -86,7 +86,7 @@
             <type>email</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>unfiled$public/Appoitment_was_Cancelled</template>
+        <template>Appointment_Templates_Email/Appointment_was_Cancelled</template>
     </alerts>
     <fieldUpdates>
         <fullName>Update_Status_to_Cancelled</fullName>
@@ -101,7 +101,7 @@
     <rules>
         <fullName>Evaluate canceled status</fullName>
         <actions>
-            <name>Send_email_when_appoitment_was_cancelled</name>
+            <name>Send_email_when_appointment_was_cancelled</name>
             <type>Alert</type>
         </actions>
         <active>true</active>

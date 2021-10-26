@@ -175,13 +175,13 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Doctorr__c</fullName>
+        <fullName>Doctor__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Doctorr</label>
+        <label>Doctor</label>
         <referenceTo>Doctor__c</referenceTo>
-        <relationshipLabel>Appointment</relationshipLabel>
-        <relationshipName>Appointment</relationshipName>
+        <relationshipLabel>Appointment (Doctor)</relationshipLabel>
+        <relationshipName>Appointment1</relationshipName>
         <required>true</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -198,13 +198,13 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Patientt__c</fullName>
+        <fullName>Patient__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Patientt</label>
+        <label>Patient</label>
         <referenceTo>Patients__c</referenceTo>
-        <relationshipLabel>Appointment</relationshipLabel>
-        <relationshipName>Appointment</relationshipName>
+        <relationshipLabel>Appointment (Patient)</relationshipLabel>
+        <relationshipName>Appointment1</relationshipName>
         <required>true</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -239,29 +239,43 @@
         <fullName>Time__c</fullName>
         <externalId>false</externalId>
         <label>Time</label>
-        <required>false</required>
+        <required>true</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Time</type>
     </fields>
     <fields>
-        <fullName>isOneDayBeforeDate__c</fullName>
-        <defaultValue>false</defaultValue>
+        <fullName>isCompleted__c</fullName>
         <externalId>false</externalId>
-        <label>isOneDayBeforeDate</label>
+        <formula>Date__c &lt;  TODAY()</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>isCompleted</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <label>Appointment</label>
     <nameField>
-        <displayFormat>A-{0000}</displayFormat>
-        <label>Appoitment Name</label>
+        <label>Appointment Name</label>
         <trackHistory>false</trackHistory>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>Appointment</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Validate_Name</fullName>
+        <active>true</active>
+        <errorConditionFormula>Name == &apos;&apos;</errorConditionFormula>
+        <errorDisplayField>Name</errorDisplayField>
+        <errorMessage>Name can not be null, please enter a name</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Validation_Date</fullName>
+        <active>true</active>
+        <errorConditionFormula>Date__c &lt;  TODAY()</errorConditionFormula>
+        <errorDisplayField>Date__c</errorDisplayField>
+        <errorMessage>Can not be less than today</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

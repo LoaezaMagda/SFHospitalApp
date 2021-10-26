@@ -9,8 +9,8 @@
      <nav class="navbar navbar-dark bg-dark" style="padding:20px;">
              <h1><p class="" style="margin-left:50px;color:#007bff">HOSPITAL</p></h1>
              <div class="float-left" style="width:400px;position:absolute;margin-left:300px">
-                 <a style="color:white;" href="/apex/Appoitments" id="appLink">Appoitments</a>
-                 <apex:outputPanel rendered="{!If($Profile.Name =='System Administrator',true,false)}">
+                 <a style="color:white;" href="/apex/Appoitments" id="appLink">Appointments</a>
+                 <apex:outputPanel rendered="{!If($Profile.Name == 'System Administrator',true,false)}">
                      <a style="padding-left:15px;color:white;" href="/apex/Doctors" id="appLisnk">Doctors</a>
                       <a style="padding-left:15px;color:white;" href="/apex/Patients" id="appLissnk">Patients</a>
                   </apex:outputPanel>

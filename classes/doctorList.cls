@@ -10,12 +10,12 @@ public class doctorList {
     public doctorList(ApexPages.StandardController controller) {
         doc = new Doctor__c();
         if(doctorId != null && String.isNotEmpty(doctorId)) {
-            doc = [SELECT Id,Name,FirstN__c,Last_Name__c,User__c,Title__c,License_Number__c,Phone__c,Email__c FROM Doctor__c WHERE Id =:doctorId LIMIT 1]; 
+            doc = [SELECT Id,Name,User__c,Title__c,License_Number__c,Phone__c,Email__c FROM Doctor__c WHERE Id =:doctorId LIMIT 1]; 
         }
     }
     public List<Doctor__c> getDoctors() {
         currentId = UserInfo.getUserId();
-        qryResult = 'SELECT Id,Name,User__c,FirstN__c, Last_Name__c,Title__c,License_Number__c,Phone__c,Email__c,CreatedById FROM Doctor__c LIMIT:blockSize OFFSET:index';
+        qryResult = 'SELECT Id,Name,User__c,Title__c,License_Number__c,Phone__c,Email__c,CreatedById FROM Doctor__c LIMIT:blockSize OFFSET:index';
         totalRecs= database.countQuery('select count() FROM Doctor__c');
         List<Doctor__c> res = Database.query(qryResult);
         return res;
@@ -58,11 +58,15 @@ public class doctorList {
         try {
             upsert doc;
         }catch(DmlException e) {
-            System.debug('ALGO SALIO MAL');
+            System.debug(e.getMessage());
         }
         PageReference redirectSuccess = new PageReference('/apex/Doctors');
         redirectSuccess.setRedirect(true);
         return redirectSuccess;
+    }
+    
+    public String getDoctorId() {
+        return doctorId;
     }
     
     

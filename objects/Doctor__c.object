@@ -86,7 +86,7 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
-        <content>Doctors</content>
+        <content>createDoctor</content>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Visualforce</type>
     </actionOverrides>
@@ -181,28 +181,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Email</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>FirstN__c</fullName>
-        <externalId>false</externalId>
-        <label>First Name</label>
-        <length>30</length>
-        <required>true</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Last_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Last Name</label>
-        <length>20</length>
-        <required>true</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -317,8 +295,6 @@
         <fullName>All</fullName>
         <columns>NAME</columns>
         <columns>Title__c</columns>
-        <columns>FirstN__c</columns>
-        <columns>Last_Name__c</columns>
         <columns>Phone__c</columns>
         <columns>Speciality__c</columns>
         <columns>Shift__c</columns>
@@ -328,10 +304,9 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <displayFormat>D-{0000}</displayFormat>
-        <label>Doctor Number</label>
+        <label>Doctor Name</label>
         <trackHistory>false</trackHistory>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>Doctors</pluralLabel>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>

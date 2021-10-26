@@ -19,19 +19,19 @@ public class appoitmentList {
         currentProfile =  getCurrentProfile();
         currentId = UserInfo.getUserId();
         if(appoitmentId != null && String.isNotEmpty(appoitmentId)) {
-            app = [SELECT Id,Name,Date__c,Patientt__c,Doctorr__c,Time__c, Status__c FROM Appointment__c WHERE Id =:appoitmentId LIMIT 1]; 
+            app = [SELECT Id,Name,Date__c,Patient__c,Doctor__c,Time__c, Status__c FROM Appointment__c WHERE Id =:appoitmentId LIMIT 1]; 
         }
     }
 
-    public List<Appointment__c> getAppoitments() {
-         if(currentProfile == 'Standar Platform User2'){
-            qryResult = 'SELECT Id,Name,Date__c,Doctorr__c, Time__c,Patientt__c, Status__c  FROM Appointment__c WHERE Doctorr__r.User__c =:currentId ORDER BY Date__c ASC LIMIT:blockSize OFFSET:index';
-            totalRecs= database.countQuery('select count() FROM Appointment__c WHERE Doctorr__r.User__c =:currentId ');
+    public List<Appointment__c> getAppointments() {
+         if(currentProfile == 'Doctors'){
+            qryResult = 'SELECT Id,Name,Date__c,isCompleted__c,Patient__c,Doctor__c,Time__c, Status__c  FROM Appointment__c WHERE Doctor__r.User__c =:currentId ORDER BY Date__c DESC LIMIT:blockSize OFFSET:index';
+            totalRecs= database.countQuery('select count() FROM Appointment__c WHERE Doctor__r.User__c =:currentId ');
           }else if(currentProfile == 'Patients'){
-            qryResult = 'SELECT Id,Name,Date__c,Doctorr__c, Time__c,Patientt__c, Status__c  FROM Appointment__c WHERE Patientt__r.User__c =:currentId ORDER BY Date__c ASC LIMIT:blockSize OFFSET:index';
-            totalRecs= database.countQuery('select count() FROM Appointment__c WHERE Patientt__r.User__c =:currentId');
+            qryResult = 'SELECT Id,Name,Date__c, Time__c,isCompleted__c, Patient__c,Doctor__c, Status__c  FROM Appointment__c WHERE Patient__r.User__c =:currentId ORDER BY Date__c DESC LIMIT:blockSize OFFSET:index';
+            totalRecs= database.countQuery('select count() FROM Appointment__c WHERE Patient__r.User__c =:currentId');
           }else if(currentProfile  == 'System Administrator'){
-            qryResult = 'SELECT Id,Name,Date__c ,Doctorr__c,Patientt__c, Time__c, Status__c  FROM Appointment__c ORDER BY Date__c ASC LIMIT:blockSize OFFSET:index';
+            qryResult = 'SELECT Id,Name,Date__c, Time__c,isCompleted__c, Status__c,Patient__c,Doctor__c  FROM Appointment__c ORDER BY Date__c DESC LIMIT:blockSize OFFSET:index';
             totalRecs= database.countQuery('select count() FROM Appointment__c');
           }
           List<Appointment__c> res = Database.query(qryResult);
@@ -67,18 +67,17 @@ public class appoitmentList {
     }
         
     public PageReference save() {
+        PageReference redirectSuccess;
         try {
             if(appoitmentId != null){
-               updateRecord(app);
+               redirectSuccess = updateRecord(app);
             }
             else if(appoitmentId == null) {
-                saveRecord(app);
+                redirectSuccess = saveRecord(app);
             }
         }catch(DmlException e) {
             System.debug(e.getMessage());
         }
-        PageReference redirectSuccess = new PageReference('/apex/Appoitments');
-        redirectSuccess.setRedirect(true);
         return redirectSuccess;
     }
     
@@ -119,44 +118,46 @@ public class appoitmentList {
         return appoitmentId;
     }
     
-    private PageReference returnPageErrorDate(){
+    private PageReference updateRecord(Appointment__c app) {
+            upsert app;
+        	PageReference pageRef = new PageReference('/apex/Appoitments');
+            ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.CONFIRM, 
+            'Record was updated successfully');
+            ApexPages.addMessage(myMsg);
+            return pageRef;
+    }
+    
+    private PageReference saveRecord(Appointment__c app){
+              if(currentProfile == 'Patients')
+              {
+                 Patients__c pat = [select Id from Patients__c where User__c =: currentId LIMIT 1];
+                 app.Patient__c = pat.Id;
+        
+               }else if(currentProfile == 'Doctors') {
+                 Doctor__c doc = [select Id from Doctor__c where User__c =: currentId LIMIT 1];
+                 app.Doctor__c = doc.Id;
+                        
+               }
+               upsert app;
+               Appointment__c ap = [SELECT Doctor__r.Email__c, Patient__r.Email__c FROM Appointment__c WHERE Id =:app.Id LIMIT 1];
+               app.Doctor_Email__c = ap.Doctor__r.Email__c;
+               app.Patient_Email__c = ap.Patient__r.Email__c;
+               upsert app;
+               PageReference pageRef = new PageReference('/apex/Appoitments');
+               ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.CONFIRM, 
+              'Record was Saved Successfully');
+               ApexPages.addMessage(myMsg);
+               return pageRef;                
+    }
+    
+    /*private PageReference returnPageErrorDate(){
          PageReference pageRef = ApexPages.CurrentPage();
          ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, 
         'Invalid Date,It can not be less than today');
          ApexPages.addMessage(myMsg);
          return pageRef;
-    }
-    
-    private void updateRecord(Appointment__c app) {
-        if(app.Date__c > Date.today())
-		   upsert app;                    
-        else
-           returnPageErrorDate();
-    }
-    
-    private void saveRecord(Appointment__c app){
-        if(app.Date__c > Date.today()){
-           if(currentProfile == 'Patients')
-              {
-                 List<Patients__c> pat = [select Id from Patients__c where User__c =: currentId LIMIT 1];
-                 app.Patientt__c = pat[0].Id;
-        
-               }else if(currentProfile == 'Standar Platform User2') {
-                 List<Doctor__c> doc = [select Id from Doctor__c where User__c =: currentId LIMIT 1];
-                 app.Doctorr__c = doc[0].Id;
-                        
-               }
-               upsert app;
-               List<Appointment__c> ap = [SELECT Doctorr__r.Email__c, Patientt__r.Email__c FROM Appointment__c WHERE Id =:app.Id LIMIT 1];
-               app.Doctor_Email__c = ap[0].Doctorr__r.Email__c;
-               app.Patient_Email__c = ap[0].Patientt__r.Email__c;
-               upsert app;
-        }
-        else{
-            returnPageErrorDate();
-        }
-                
-    }
+    }*/
+
     
     
 }

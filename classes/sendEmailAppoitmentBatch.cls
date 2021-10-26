@@ -10,10 +10,10 @@ public class sendEmailAppoitmentBatch implements Database.Batchable<SObject> , D
     List<Appointment__c> appToReminder= new List<Appointment__c>();
 	List<Appointment__c> appToConfirm = new List<Appointment__c>();
     
-	public Database.QueryLocator start(Database.BatchableContext bc) {
- 		return database.getQueryLocator('SELECT Id,Name,Time__c,Doctorr__r.Name,Patientt__r.Name,Status__c,Doctor_Email__c,Patient_Email__c,Date__c FROM Appointment__c WHERE Date__c >=:currentDay AND Date__c <=:afterToday AND Status__c !=: cancelled');
-    }
+	public Database.QueryLocator start(Database.BatchableContext bc) {//Doctorr__r.Name,Patientt__r.Name
+ 		return database.getQueryLocator('SELECT Id,Name,Time__c,Patient__r.User__c, Doctor__r.Name,Patient__r.Name,Status__c,Doctor_Email__c,Patient_Email__c,Date__c FROM Appointment__c WHERE Date__c >=:currentDay AND Date__c <=:afterToday AND Status__c !=: cancelled');
     
+    }
     //todas las que han sido confirmadas el dia de hoy y que la fecha sea > today()
     //todas donde la fecha sea today+1 y el status null 
     //Todas donde la fecha se today y el status null
@@ -44,25 +44,27 @@ public class sendEmailAppoitmentBatch implements Database.Batchable<SObject> , D
     }
     
     private static void sendEmail(EmailTemplate temp, List<Appointment__c> records) {
-        Messaging.SingleEmailMessage singleMail = new Messaging.SingleEmailMessage();
+       
         List<Messaging.SingleEmailMessage> mail = new List<Messaging.SingleEmailMessage>();
         List<String> toAddresses = new List<String>();
         String urldomain = URL.getSalesforceBaseUrl().toExternalForm();
         
         for(Appointment__c app : records) {
-			toAddresses.add(app.Patient_Email__c);
-            if(app.Status__c!= null && app.Status__c == 'confirmed'){
-               toAddresses.add(app.Doctor_Email__c); 
-            }
+            Messaging.SingleEmailMessage singleMail = new Messaging.SingleEmailMessage();
+            //toAddresses = new List<String>();
+			//toAddresses.add(app.Patient_Email__c);
+            //if(app.Status__c!= null && app.Status__c == 'confirmed'){
+             //  toAddresses.add(app.Doctor_Email__c); 
+            //}
             
-            singleMail.setTargetObjectId(UserInfo.getUserId());
-            singleMail.setToAddresses(toAddresses);
+            singleMail.setTargetObjectId(app.Patient__r.User__c);
+            //singleMail.setToAddresses(toAddresses);
             String subject = temp.Subject;
         	
             String htmlBody = temp.HtmlValue;
             htmlBody = htmlBody.replace('{!Appointment__c.Name}', app.Name);
-            htmlBody = htmlBody.replace('{!Appointment__c.Doctorr__c.Name}', app.Doctorr__r.Name);
-            htmlBody = htmlBody.replace('{!Appointment__c.Patientt__c.Name}', app.Patientt__r.Name);
+            htmlBody = htmlBody.replace('{!Appointment__c.Doctor__c.Name}', app.Doctor__r.Name);
+            htmlBody = htmlBody.replace('{!Appointment__c.Patient__c.Name}', app.Patient__r.Name);
             htmlBody = htmlBody.replace('{!Appointment__c.Time__c}', String.valueOf(app.Time__c));
             htmlBody = htmlBody.replace('{!Appointment__c.Date__c}', String.valueOf(app.Date__c));
             htmlBody = htmlBody.replace('{!Appointment__c.Link}', urldomain +'/apex/createAppoitment?id='+app.id);
@@ -81,6 +83,5 @@ public class sendEmailAppoitmentBatch implements Database.Batchable<SObject> , D
         
        Messaging.sendEmail(mail);
     }
-    
     
 }

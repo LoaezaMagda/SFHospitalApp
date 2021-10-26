@@ -11,11 +11,11 @@ public class patientList {
     public patientList(ApexPages.StandardController controller) {
         patient = new Patients__c();
         if(patientId != null && String.isNotEmpty(patientId)) {
-            patient = [SELECT Id,User__c,First_Name__c, Last_Name__c,Age__c,Gender__c,Name,Email__c FROM Patients__c WHERE Id =:patientId LIMIT 1]; 
+            patient = [SELECT Id,User__c,Age__c,Gender__c,Name,Email__c FROM Patients__c WHERE Id =:patientId LIMIT 1]; 
         }
     }
     public List<Patients__c> getPatients() {
-        qryResult = 'SELECT Id,User__c,First_Name__c,Last_Name__c,Age__c,Gender__c,Name,Email__c FROM Patients__c LIMIT:blockSize OFFSET:index';
+        qryResult = 'SELECT Id,User__c,Age__c,Gender__c,Name,Email__c FROM Patients__c LIMIT:blockSize OFFSET:index';
         totalRecs= database.countQuery('select count() FROM Patients__c');
         List<Patients__c> res = Database.query(qryResult);
         return res;
@@ -63,6 +63,10 @@ public class patientList {
         PageReference redirectSuccess = new PageReference('/apex/Patients');
         redirectSuccess.setRedirect(true);
         return redirectSuccess;
+    }
+    
+    public String getPatientId(){
+        return patientId;
     }
     
 }

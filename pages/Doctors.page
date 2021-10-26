@@ -1,7 +1,7 @@
 <apex:page standardController="Doctor__c" extensions="doctorList" lightningStyleSheets="false" showHeader="false" sidebar="false">
     <c:headerHospitalApp />
 	<c:welcomeCardHospitalApp />
-    <div class="container">
+    <div class="container" style="margin-bottom:150px;">
        <div id="menu-content" class="float-left" style="width:200px;padding:20px;position:relative;text-align:center">
           <a href="/apex/createDoctor" class="list-group-item list-group-item-action active" aria-current="true">
                new Doctor
@@ -13,15 +13,7 @@
                  <apex:pageBlockTable value="{!Doctors}" var="d"  style="text-align:center;">
                     <apex:column >
                         <apex:outputField value="{!d.Name}" id="NameAppDOM" /> 
-                        <apex:facet name="header">No.</apex:facet>
-                    </apex:column>
-                    <apex:column >
-                        <apex:outputField value="{!d.FirstN__c}" id="firstnAppDOM" /> 
                         <apex:facet name="header">Name</apex:facet>
-                    </apex:column>
-                     <apex:column >
-                        <apex:outputField value="{!d.Last_Name__c}" id="lastnAppDOM" /> 
-                        <apex:facet name="header">Last</apex:facet>
                     </apex:column>
                     <apex:column >
                         <apex:outputField value="{!d.License_Number__c}" id="TimeAppDOM" /> 
@@ -50,5 +42,5 @@
        </apex:outputPanel>
       </apex:form>
     </div>
-<c:footerHospitalApp />
+ <c:footerHospitalApp />
 </apex:page>

@@ -1,44 +1,26 @@
-<apex:page standardController="Appointment__c" standardStylesheets="true" extensions="appoitmentList" lightningStyleSheets="true" showheader="false"  sidebar="false">
+<apex:page standardController="Appointment__c" extensions="appoitmentList" lightningStyleSheets="true" showheader="false"  sidebar="false">
     <c:headerHospitalApp />
     <br/>
-  <div class="container">
-      <apex:SectionHeader title="Appoitment" subtitle="Edit Appoitment" rendered="{! If(appoitmentId != '' ,true,false) }"/>      
-  	  <apex:SectionHeader title="Appoitment" subtitle="New Appoitment" rendered="{! If(appoitmentId == '' ,true,false) }"/>
-          <apex:form >
-          <apex:pageMessages />
+  <div class="container" style="margin-bottom:150px;">
+      <apex:SectionHeader title="" subtitle="Edit Appointment" rendered="{! If(appoitmentId != '' ,true,false) }"/>      
+  	  <apex:SectionHeader title="" subtitle="New Appointment" rendered="{! If(appoitmentId == '' ,true,false) }"/>
+      <apex:form >
         <apex:pageBlock >
             <apex:pageBlockButtons styleClass="btn-save">
                 <apex:commandButton value="Save" action="{!save}"/>
             </apex:pageBlockButtons>
-            	<apex:outputPanel id="docto" rendered="{! If(currentProfile=='Standar Platform User2',true,false) }">
-                    <apex:pageBlockSection title="Appoitment" columns="1">
-                        <apex:inputField value="{!app.Patientt__c}" rendered="{!If(appoitmentId != '', true,false) }" html-disabled="true"/><br/>
-                        <apex:inputField value="{!app.Patientt__c}" rendered="{!If(appoitmentId == '', true,false) }" /><br/>
-                        <apex:inputField value="{!app.Date__c}" id="date"/><br/>
-                        <apex:inputField value="{!app.Time__c}" id="time"/><br/>
-                        <apex:inputField value="{!app.Status__c}" id="status" rendered="{! If(app.Status__c == '' || app.Status__c == null, true, false)}"/>                        
-                    </apex:pageBlockSection>
-            	</apex:outputPanel>
-            
-            <apex:outputPanel id="appoit3" rendered="{! If(currentProfile=='Patients',true,false) }">
-                    <apex:pageBlockSection title="Appoitment" columns="1">
-                        <apex:inputField value="{!app.Doctorr__c}" rendered="{!If(appoitmentId != '', true,false)}"  html-disabled="true"/><br/>
-                        <apex:inputField value="{!app.Doctorr__c}" rendered="{!If(appoitmentId == '', true,false) }" /><br/>
-                        <apex:inputField value="{!app.Date__c}" id="date"/>
-                        <apex:inputField value="{!app.Time__c}" id="time"/>
-                        <apex:inputField value="{!app.Status__c}" id="status" rendered="{! If(app.Status__c == '' || app.Status__c == null, true, false)}"/>  
-                    </apex:pageBlockSection>
-             </apex:outputPanel>
-            
-            <apex:outputPanel id="appoit2" rendered="{! If(currentProfile == 'System Administrator' ,true,false) }">
-                    <apex:pageBlockSection title="Appoitment" columns="1">
-                        <apex:inputField value="{!app.Patientt__c}" rendered="{!If(appoitmentId != '', true,false) }" html-disabled="true"/><br/>
-                        <apex:inputField value="{!app.Doctorr__c}" rendered="{!If(appoitmentId != '', true,false)}"  html-disabled="true"/><br/>
-                        <apex:inputField value="{!app.Patientt__c}" rendered="{!If(appoitmentId == '', true,false) }" /><br/>
-                        <apex:inputField value="{!app.Doctorr__c}" rendered="{!If(appoitmentId == '', true,false) }" /><br/>
-                        <apex:inputField value="{!app.Date__c}" id="date"/>
-                        <apex:inputField value="{!app.Time__c}" id="time"/>
-                        <apex:inputField value="{!app.Status__c}" id="status" rendered="{! If(app.Status__c == '' || app.Status__c == null, true, false)}"/>  
+            	<apex:outputPanel >
+                    <apex:pageBlockSection title="Appointment" columns="1">
+                        <apex:inputField value="{!app.Name}" id="nam1"/>
+                        <apex:inputField styleClass="pat" value="{!app.Patient__c}" html-disabled="true" rendered="{! If(currentProfile=='Doctors' && appoitmentId != '',true,false) }"/>
+                        <apex:inputField styleClass="doc" value="{!app.Doctor__c}" html-disabled="true" rendered="{! If(currentProfile=='Patients' && appoitmentId != '',true,false) }"/>
+                        <apex:inputField styleClass="pat" value="{!app.Patient__c}" rendered="{! If(currentProfile == 'System Administrator' || currentProfile == 'Doctors' && appoitmentId == '', true,false) }"/>
+                        <apex:inputField styleClass="doc" value="{!app.Doctor__c}" rendered="{! If(currentProfile == 'System Administrator' || currentProfile == 'Patients' && appoitmentId == '', true,false) }"/>
+                        <apex:inputField styleClass="date" value="{!app.Date__c}" id="date1" rendered="{! If( app.Status__c != 'cancelled' ,true,false) }"/>
+                        <apex:inputField styleClass="date" value="{!app.Date__c}" id="date2" html-disabled="true" rendered="{! If(app.Status__c == 'cancelled' ,true,false) }"/>
+                        <apex:inputField styleClass="time" value="{!app.Time__c}" id="time"/>
+                        <apex:inputField value="{!app.Status__c}" id="status" styleClass="status2" rendered="{! If(currentProfile=='Patients',true,false) }"/>
+                        <apex:inputField value="{!app.Status__c}" id="status2" html-disabled="true" rendered="{! If(currentProfile !='Patients',true,false) }"/>
                     </apex:pageBlockSection>
             	</apex:outputPanel>
         </apex:pageBlock>
@@ -46,4 +28,28 @@
 	<br/><br/><br/>
   </div>
   <c:footerHospitalApp />
+<script>
+    (function() {
+        
+        var status = document.getElementsByClassName('status2')[0];
+        var selectedValue = status.options[status.selectedIndex].value;
+        if(selectedValue  != '') {
+            status.disabled = true;
+        }
+        /*else if(selectedValue == 'cancelled'){
+        	status.disabled = true;
+            doc.disabled = true;
+            pat.disabled = true;
+            time.disabled = true;
+            name.disabled = true;
+            date.disabled = true;
+        }*/
+        
+       setTimeout(() => {
+          let msg = document.getElementById('msgAppDate');
+          msg.hidden = true;
+       },5000)
+        
+	})();
+</script>
 </apex:page>
